@@ -1,7 +1,6 @@
 class TicTacToe
   def initialize
     @p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9 = blank_spaces
-    @posibble_combinantions = posibble_combinantions
     @squares = [@p1, @p2, @p3, @p4, @p5, @p6, @p7, @p8, @p9]
     @f_player = ''
     @s_player = ''
@@ -75,8 +74,22 @@ class TicTacToe
     print_board
     loop do
       user_turn(@f_player)
-      user_turn(@s_player)
+      if @s_player == '🤖'
+        computer
+      else
+        user_turn(@s_player)
+      end
     end
+  end
+
+  def computer
+    empty_squares = @squares.each_index.select { |i| @squares[i] == ' ' }
+
+    @squares[empty_squares.sample].sub!(' ', '🤖')
+
+    print_board
+    @moves += 1
+    winner
   end
 
   def same_value?(arr, user_emoji)
@@ -90,7 +103,7 @@ class TicTacToe
   end
 
   def winner
-    @posibble_combinantions.each do |combos|
+    posibble_combinantions.each do |combos|
       if same_value?(combos, @f_player)
         puts "#{@f_player}  wins 🎊"
         exit
